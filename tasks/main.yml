@@ -1,0 +1,25 @@
+---
+
+
+- name: Install git
+  ansible.builtin.package:
+    name: git
+    state: present
+
+- name: Check if {{ git_user }} is configured for git
+  ansible.builtin.stat: 
+    path: ~/.gitconfig
+  become_user: "{{ git_user }}"
+  register: gitconfig
+  when: git_user is defined
+
+- name: Intialize git for {{ git_user }}
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - git config --global user.name "{{ git_user_name }}"
+    - git config --global user.email "{{ git_user_email }}"
+    - git config --global init.defaultBranch main
+  become_user: "{{ git_user }}"
+  when:
+    - git_user is defined
+    - not gitconfig.stat.exists

@@ -1,0 +1,17 @@
+---
+
+- hosts: all
+  become: yes
+
+  pre_tasks:
+
+    - name: Add user configured by git role
+      ansible.builtin.user:
+        name: wes
+
+  roles:
+
+    - role: ../../ansible-git-role
+      git_user: wes
+      git_user_name: Wes Williams
+      git_user_email: wes@wahlax.com
