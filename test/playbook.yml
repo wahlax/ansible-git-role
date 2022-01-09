@@ -4,6 +4,9 @@
   become: yes
 
   pre_tasks:
+    - name: Init Base VM
+      ansible.builtin.include_role:
+        name: wahlax.init_base
 
     - name: Add user configured by git role
       ansible.builtin.user:
